@@ -10,3 +10,6 @@ This source code implementations for Text to Speech ATIS airport and input by my
 - cd src
 - python3 as.py
 
+
+don't forget instalattion libariry 
+
