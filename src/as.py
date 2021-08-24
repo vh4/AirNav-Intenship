@@ -24,7 +24,7 @@ tk = Tk()
 frame = Frame(
     tk,
     bg= 'white',
-    height = '150'
+    height = '100'
 )
 frame.pack(fill = X)
 frame1 = Frame(
@@ -37,13 +37,24 @@ label = Label(frame, text = "Contoh Text to Speech",
               font = "bold, 30",
               bg="white"
               )
-label.place(x = 100, y = 70)
+label.place(x = 100, y = 40)
 entry = Entry(frame1,
         font=14)
 entry.grid(row=3, column=0, pady=10)
-entry.place(x=100, y=82,width=500,
+entry.place(x=100, y=152,width=500,
         height=100)
 entry.insert(0, "")
+
+my_listbox = Listbox(frame1,
+        font=14)
+my_listbox.grid(row=3, column=0, pady=10)
+my_listbox.place(x=250, y=50,width=200,
+        height=100)
+my_listbox.insert(END, "1. English")
+my_listbox.insert(END, "2. Indonesia")
+my_list = ['3.China', '4. France']
+for item in my_list:
+    my_listbox.insert(END, item)
 def inputTextToSpeech(text):
     gts = gTTS(text=text, lang='en', slow=False)
     namaFileInput = 'OUTPUT_HASIL-' + str(Date.day) + '-' + str(Date.month) + '-'\
@@ -58,7 +69,7 @@ def gui():
                  font="bold, 15",
                  bg='yellow')
     btn.place(x=230,
-              y=220)
+              y=270)
     tk.title("Contoh Text To Speech")
     tk.geometry("650x550+150+200")
     print(entry.get())
