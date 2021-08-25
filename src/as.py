@@ -5,6 +5,8 @@ import datetime
 Date = datetime.datetime.now()
 import random
 from tkinter import  *
+import keyboard
+
 
 #input data dari sensor atau data dummy / random
 ANGIN = random.randint(240,245)
@@ -26,6 +28,9 @@ frame = Frame(
     bg= 'white',
     height = '100'
 )
+
+
+
 frame.pack(fill = X)
 frame1 = Frame(
     tk,
@@ -33,41 +38,48 @@ frame1 = Frame(
     height='850'
 )
 frame1.pack(fill = X)
-label = Label(frame, text = "Contoh Text to Speech",
-              font = "bold, 30",
+label = Label(frame, font=("Agency FB", 40), text = "Contoh Text to Speech",
               bg="white"
               )
-label.place(x = 100, y = 40)
+label.place(x = 140, y = 40)
 entry = Entry(frame1,
         font=14)
 entry.grid(row=3, column=0, pady=10)
-entry.place(x=100, y=152,width=500,
+entry.place(x=70, y=152,width=500,
         height=100)
 entry.insert(0, "")
 
 my_listbox = Listbox(frame1,
-        font=14)
+font=("Agency FB", 14),
+)
 my_listbox.grid(row=3, column=0, pady=10)
-my_listbox.place(x=250, y=50,width=200,
+my_listbox.place(x=250, y=40,width=200,
         height=100)
 my_listbox.insert(END, "1. English")
 my_listbox.insert(END, "2. Indonesia")
-my_list = ['3.China', '4. France']
+my_list = ['3. China', '4. France']
 for item in my_list:
     my_listbox.insert(END, item)
 def inputTextToSpeech(text):
-    gts = gTTS(text=text, lang='en', slow=False)
-    namaFileInput = 'OUTPUT_HASIL-' + str(Date.day) + '-' + str(Date.month) + '-'\
-               + '-' + str(Date.year) + '-' \
-               + str(Date.second) + ':' + str(Date.minute) + '.mp3'
-    gts.save(namaFileInput)
-    suara.playsound(namaFileInput)
-    os.remove(namaFileInput)
+    if my_listbox.get(ANCHOR) == '1. English' :
+        gts = gTTS(text=text, lang='en', slow=False)
+    elif my_listbox.get(ANCHOR) == '2. Indonesia' :
+        gts = gTTS(text=text, lang='id', slow=False)
+    elif my_listbox.get(ANCHOR) == '3. China' :
+        gts = gTTS(text=text, lang='zh-CN', slow=False)
+    elif my_listbox.get(ANCHOR) == '4. France' :
+        gts = gTTS(text=text, lang='fr', slow=False)
+    else:
+        gts = gTTS(text=text, lang='id', slow=False)
+
+    gts.save("input.mp3")
+    os.system("input.mp3")
 def gui():
     btn = Button(frame1, text="SUBMIT",
                  width="15", pady=10, command=gui,
-                 font="bold, 15",
-                 bg='yellow')
+                 font=("Agency FB", 18),
+                 foreground='white',
+                 bg='black')
     btn.place(x=230,
               y=270)
     tk.title("Contoh Text To Speech")
@@ -79,7 +91,7 @@ def gui():
 #airport indentity
 AIRPORT_IDENTITY = "THIS IS AERODROME TERMINAL INFORMATION SERVICE FOR HUSEIN AIRPORT INFORMATION CHARLIE,"
 #report Weather
-Detik_Menit_Parsing = str(Date.second) + str(Date.minute)
+Detik_Menit_Parsing = '0' + str(random.randint(100,999))
 data = []
 for tgl in Detik_Menit_Parsing:
     data.append(tgl)
@@ -143,22 +155,28 @@ TOTAL_DATA = str(AIRPORT_IDENTITY) + str(REPORT_WEATHER) + str(SURFACE_WIND) + s
 
 def textToSpeechAirnav(text):
     tts = gTTS(text=text, lang='en', slow=False)
-    namaFile = 'OUTPUT_AIRNAV_ATIS-' + str(Date.day) + '-' + str(Date.month) + '-'\
-               + '-' + str(Date.year) + '-' \
-               + str(Date.second) + ':' + str(Date.minute)
-    tts.save(namaFile)
-    suara.playsound(namaFile)
-    os.remove(namaFile)
-print("1. Text to speech ATIS Husein Airport")
-print("2. Text to speech Input Terminal")
-inputan_switch = str(input("pilih nomor :"))
-def numbers_to_strings(argument):
-    if argument == '1':
-        textToSpeechAirnav(TOTAL_DATA)
-    elif argument == '2':
-        gui()
-    else:
-        print("tidak ada")
-if __name__ == "__main__":
-    argument = 0
-    print(numbers_to_strings(inputan_switch))
+    tts.save('airnav.mp3')
+    os.system('airnav.mp3')
+
+try:
+    while True:
+        print("1. Text to speech ATIS Husein Airport")
+        print("2. Text to speech Input Terminal")
+        inputan_switch = str(input("pilih nomor :"))
+
+
+        def numbers_to_strings(argument):
+            if argument == '1':
+                textToSpeechAirnav(TOTAL_DATA)
+                return
+            elif argument == '2':
+                gui()
+            else:
+                print("tidak ada")
+
+
+        if __name__ == "__main__":
+            argument = 0
+        print(numbers_to_strings(inputan_switch))
+except KeyboardInterrupt:
+    pass
